@@ -1,15 +1,14 @@
-#include<sstream>
-#include<iomanip>
-#include<iostream>
-#include<bitset>
-#include<string>
-#include<algorithm>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+#include <bitset>
+#include <string>
+#include <cmath>
 
 using namespace std;
 
 void decimal_to_binary(int number) {
-    cout << "Binary equivalent: ";
-    cout << bitset<8>(number) << endl;
+    cout << "Binary equivalent: " << bitset<8>(number) << endl;
 }
 
 void decimal_to_octal(int number) {
@@ -20,8 +19,8 @@ void decimal_to_hexadecimal(int number) {
     cout << "Hexadecimal equivalent: " << hex << number << endl;
 }
 
-void binary_to_decimal(int number) {
-    cout << "Decimal Equivalent: " << dec << number << endl;
+void binary_to_decimal(const string& binaryStr) {
+    cout << "Decimal Equivalent: " << bitset<8>(binaryStr).to_ulong() << endl;
 }
 
 bool is_binary(const string& str) {
@@ -34,19 +33,19 @@ bool is_binary(const string& str) {
 }
 
 void determine_number_format(const string& input) {
-    istringstream iss(input);
+    istringstream is(input);
     int number;
 
-    if (iss >> dec >> number) {
+    if (is >> dec >> number) {
         cout << "Decimal Format" << endl;
     }
-    else if (iss.clear(), iss.seekg(0), is_binary(input)) {
+    else if (is.clear(), is.seekg(0), is_binary(input)) {
         cout << "Binary Format" << endl;
     }
-    else if (iss.clear(), iss.seekg(0), iss >> oct >> number) {
+    else if (is.clear(), is.seekg(0), is >> oct >> number) {
         cout << "Octal Format" << endl;
     }
-    else if (iss.clear(), iss.seekg(0), iss >> hex >> number) {
+    else if (is.clear(), is.seekg(0), is >> hex >> number) {
         cout << "Hexadecimal Format" << endl;
     }
     else {
@@ -61,9 +60,7 @@ int main() {
     cout << "Enter a number: ";
     cin >> input;
 
-
     determine_number_format(input);
-
 
     cout << "Choose the conversion:" << endl;
     cout << "1. Decimal to Binary" << endl;
@@ -86,7 +83,12 @@ int main() {
         decimal_to_hexadecimal(number);
         break;
     case 4:
-        binary_to_decimal(number);
+        if (is_binary(input)) {
+            binary_to_decimal(input);
+        }
+        else {
+            cout << "Invalid binary input!" << endl;
+        }
         break;
     default:
         cout << "Invalid option!" << endl;
